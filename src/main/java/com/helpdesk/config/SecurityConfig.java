@@ -50,6 +50,10 @@ public class SecurityConfig {
                         .requestMatchers("/base-conocimiento/**")
                         .hasAnyRole("ADMINISTRADOR", "TECNICO", "USUARIO")
 
+                        // Perfil
+                        .requestMatchers("/perfil/**")
+                        .hasAnyRole("ADMINISTRADOR", "TECNICO", "USUARIO")
+
                         // Dashboard
                         .requestMatchers("/dashboard/**")
                         .hasAnyRole("ADMINISTRADOR", "TECNICO")

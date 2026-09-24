@@ -39,6 +39,7 @@ public class TicketController {
     @GetMapping
     public String listarTickets(Model model) {
         model.addAttribute("tickets", ticketService.listar());
+        model.addAttribute("activo", "tickets");
         return "tickets/lista";
     }
 
@@ -49,6 +50,7 @@ public class TicketController {
         model.addAttribute("categorias", categoriaService.listar());
         model.addAttribute("prioridades", prioridadService.listar());
         model.addAttribute("estados", estadoTicketService.listar());
+        model.addAttribute("activo", "nuevo-ticket");
 
         return "tickets/form";
     }
@@ -68,6 +70,7 @@ public class TicketController {
         model.addAttribute("categorias", categoriaService.listar());
         model.addAttribute("prioridades", prioridadService.listar());
         model.addAttribute("estados", estadoTicketService.listar());
+        model.addAttribute("activo", "tickets");
 
         return "tickets/form";
     }
@@ -81,6 +84,7 @@ public class TicketController {
     @GetMapping("/buscar")
     public String buscarTicket(@RequestParam String titulo, Model model) {
         model.addAttribute("tickets", ticketService.buscarPorTitulo(titulo));
+        model.addAttribute("activo", "tickets");
         return "tickets/lista";
     }
 }

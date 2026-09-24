@@ -30,6 +30,8 @@ public class UsuarioController {
         model.addAttribute("usuarios",
                 usuarioService.listar());
 
+        model.addAttribute("activo", "usuarios");
+
         return "usuarios/lista";
     }
 
@@ -41,6 +43,8 @@ public class UsuarioController {
 
         model.addAttribute("roles",
                 rolService.listar());
+
+        model.addAttribute("activo", "usuarios");
 
         return "usuarios/form";
     }
@@ -75,6 +79,8 @@ public class UsuarioController {
         model.addAttribute(
                 "roles",
                 rolService.listar());
+
+        model.addAttribute("activo", "usuarios");
 
         return "usuarios/form";
     }

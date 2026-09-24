@@ -34,12 +34,14 @@ public class BaseConocimientoController {
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("articulos", articuloService.listar());
+        model.addAttribute("activo", "base-conocimiento");
         return "base_conocimiento/lista";
     }
 
     @GetMapping("/{id}")
     public String ver(@PathVariable Integer id, Model model) {
         model.addAttribute("articulo", articuloService.buscarPorId(id));
+        model.addAttribute("activo", "base-conocimiento");
         return "base_conocimiento/ver";
     }
 
@@ -47,6 +49,7 @@ public class BaseConocimientoController {
     public String nuevo(Model model) {
         model.addAttribute("articulo", new ArticuloConocimiento());
         model.addAttribute("categorias", categoriaService.listar());
+        model.addAttribute("activo", "base-conocimiento");
         return "base_conocimiento/form";
     }
 
@@ -66,6 +69,7 @@ public class BaseConocimientoController {
 
         model.addAttribute("articulo", articuloService.buscarPorId(id));
         model.addAttribute("categorias", categoriaService.listar());
+        model.addAttribute("activo", "base-conocimiento");
 
         return "base_conocimiento/form";
     }
@@ -79,6 +83,7 @@ public class BaseConocimientoController {
     @GetMapping("/buscar")
     public String buscar(@RequestParam String texto, Model model) {
         model.addAttribute("articulos", articuloService.buscarPorTexto(texto));
+        model.addAttribute("activo", "base-conocimiento");
         return "base_conocimiento/lista";
     }
 }

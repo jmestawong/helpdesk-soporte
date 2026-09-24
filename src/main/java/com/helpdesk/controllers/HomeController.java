@@ -1,40 +1,21 @@
 package com.helpdesk.controllers;
 
-import java.security.Principal;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.helpdesk.entity.Usuario;
-import com.helpdesk.service.UsuarioService;
 
 @Controller
 public class HomeController {
 
-    @Autowired
-    private UsuarioService usuarioService;
-
     @GetMapping("/")
-    public String inicio(
-            Principal principal,
-            Model model) {
+    public String inicio(Authentication authentication) {
 
-        if (principal != null) {
+        boolean puedeVerDashboard = authentication.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(a -> a.equals("ROLE_ADMINISTRADOR") || a.equals("ROLE_TECNICO"));
 
-            Usuario usuario =
-                    usuarioService.buscarPorCorreo(
-                            principal.getName()
-                    );
-
-            model.addAttribute("usuario", usuario);
-            model.addAttribute(
-                    "rol",
-                    usuario.getRol().getNombreRol()
-            );
-        }
-
-        return "index";
+        return puedeVerDashboard ? "redirect:/dashboard" : "redirect:/tickets";
     }
 }

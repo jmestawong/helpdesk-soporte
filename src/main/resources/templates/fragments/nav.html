@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<nav th:fragment="sidebar(activo)" class="sidebar">
+
+    <div class="sidebar-brand">
+        <i class="bi bi-ticket-perforated-fill"></i>
+        <span class="brand-text">HelpDesk</span>
+    </div>
+
+    <ul class="sidebar-nav">
+
+        <li sec:authorize="hasAnyRole('ADMINISTRADOR','TECNICO')">
+            <a class="nav-link" th:classappend="${activo == 'dashboard'} ? 'active'" th:href="@{/dashboard}">
+                <i class="bi bi-speedometer2"></i>
+                <span class="link-text">Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a class="nav-link" th:classappend="${activo == 'tickets'} ? 'active'" th:href="@{/tickets}">
+                <i class="bi bi-pencil-square"></i>
+                <span class="link-text">Tickets</span>
+            </a>
+        </li>
+
+        <li>
+            <a class="nav-link" th:classappend="${activo == 'nuevo-ticket'} ? 'active'" th:href="@{/tickets/nuevo}">
+                <i class="bi bi-plus-circle"></i>
+                <span class="link-text">Nuevo Ticket</span>
+            </a>
+        </li>
+
+        <li>
+            <a class="nav-link" th:classappend="${activo == 'base-conocimiento'} ? 'active'" th:href="@{/base-conocimiento}">
+                <i class="bi bi-journal-richtext"></i>
+                <span class="link-text">Base de Conocimiento</span>
+            </a>
+        </li>
+
+        <li sec:authorize="hasRole('ADMINISTRADOR')">
+            <a class="nav-link" th:classappend="${activo == 'usuarios'} ? 'active'" th:href="@{/usuarios}">
+                <i class="bi bi-people"></i>
+                <span class="link-text">Usuarios</span>
+            </a>
+        </li>
+
+        <li>
+            <a class="nav-link" th:classappend="${activo == 'perfil'} ? 'active'" th:href="@{/perfil}">
+                <i class="bi bi-person-circle"></i>
+                <span class="link-text">Perfil</span>
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="sidebar-logout">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="logout-btn">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="link-text">Salir</span>
+            </button>
+        </form>
+    </div>
+
+</nav>
+
+<header th:fragment="topbar" class="topbar">
+
+    <form th:action="@{/tickets/buscar}" method="get" class="topbar-search">
+        <input type="text" name="titulo" class="form-control" placeholder="Buscar ticket...">
+    </form>
+
+    <div class="topbar-actions">
+        <i class="bi bi-bell topbar-icon" title="Notificaciones"></i>
+
+        <a th:href="@{/perfil}" class="avatar" th:if="${usuarioSesion != null}"
+           th:text="${#strings.substring(usuarioSesion.nombres,0,1) + #strings.substring(usuarioSesion.apellidos,0,1)}">
+        </a>
+    </div>
+
+</header>
+
+</body>
+</html>

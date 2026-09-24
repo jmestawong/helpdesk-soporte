@@ -30,9 +30,19 @@ helpdesk/
 ## Módulos
 
 - **Tickets**: alta, edición, baja y búsqueda de incidencias (todos los roles).
-- **Usuarios**: administración de cuentas y roles (solo Administrador).
+- **Usuarios**: administración de cuentas y roles, con badge de color por rol (solo Administrador).
 - **Dashboard**: métricas de tickets por estado/prioridad, filtro por fecha y exportación a PDF (Administrador y Técnico).
 - **Base de Conocimiento**: artículos con solución a problemas frecuentes, con búsqueda por título/contenido, asociados a una categoría y a su autor (todos los roles pueden ver/crear/editar).
+- **Perfil**: cada usuario puede ver sus datos, actualizar nombres/apellidos y cambiar su contraseña.
+
+## Interfaz
+
+Todas las pantallas autenticadas comparten un layout con:
+
+- **Sidebar** fijo (`templates/fragments/nav.html :: sidebar`) con Dashboard, Tickets, Nuevo Ticket, Base de Conocimiento, Usuarios y Perfil — cada ítem se muestra u oculta según el rol y resalta la sección activa.
+- **Topbar** (`templates/fragments/nav.html :: topbar`) con buscador rápido de tickets, ícono de notificaciones y avatar con las iniciales del usuario (enlaza a `/perfil`).
+
+El HTML/estilo compartido vive en `static/css/app.css`; para agregar una pantalla nueva basta con incluir ambos fragmentos y pasar un atributo de modelo `activo` (ej. `"tickets"`) para resaltar el ítem correspondiente del sidebar.
 
 ## Cómo levantarlo localmente
 
@@ -82,3 +92,4 @@ También puedes crear una cuenta nueva desde "Registrarse" en el login (queda co
 | `/base-conocimiento/**`| ✅ | ✅ | ✅ |
 | `/dashboard/**`        | ✅ | ✅ | ❌ |
 | `/usuarios/**`         | ✅ | ❌ | ❌ |
+| `/perfil/**`           | ✅ | ✅ | ✅ |

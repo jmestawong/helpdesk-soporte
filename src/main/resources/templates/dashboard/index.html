@@ -9,212 +9,219 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
-<body>
+<body class="app-body">
 
-<div class="container-fluid mt-4">
+<div class="app-layout">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div th:replace="~{fragments/nav :: sidebar(${activo})}"></div>
 
-        <h2>
-            Dashboard de Tickets
-        </h2>
-        <a th:href="@{/}"
-           class="btn btn-secondary">
-            Volver
-        </a>
+    <div class="app-content">
 
-    </div>
-    <form method="get"
-          th:action="@{/dashboard}">
+        <div th:replace="~{fragments/nav :: topbar}"></div>
 
-        <div class="row mb-4">
+        <main class="page-content">
 
-            <div class="col-md-3">
+            <h2 class="mb-4">
+                Dashboard de Tickets
+            </h2>
 
-                <label>Fecha Inicio</label>
+            <form method="get"
+                  th:action="@{/dashboard}">
 
-                <input type="date"
-                       name="fechaInicio"
-                       th:value="${fechaInicio}"
-                       class="form-control">
+                <div class="row mb-4">
 
-            </div>
+                    <div class="col-md-3">
 
-            <div class="col-md-3">
+                        <label>Fecha Inicio</label>
 
-                <label>Fecha Fin</label>
+                        <input type="date"
+                               name="fechaInicio"
+                               th:value="${fechaInicio}"
+                               class="form-control">
 
-                <input type="date"
-                       name="fechaFin"
-                       th:value="${fechaFin}"
-                       th:max="${hoy}"
-                       class="form-control">
+                    </div>
 
-            </div>
-            <div class="mb-3">
-                <a th:href="@{/dashboard/pdf}"
-                   class="btn btn-danger">
-                    📄 Descargar Reporte PDF
-                </a>
+                    <div class="col-md-3">
+
+                        <label>Fecha Fin</label>
+
+                        <input type="date"
+                               name="fechaFin"
+                               th:value="${fechaFin}"
+                               th:max="${hoy}"
+                               class="form-control">
+
+                    </div>
+                    <div class="mb-3">
+                        <a th:href="@{/dashboard/pdf}"
+                           class="btn btn-danger">
+                            📄 Descargar Reporte PDF
+                        </a>
 
 
-            </div>
-            <div class="col-md-2">
+                    </div>
+                    <div class="col-md-2">
 
-                <label>&nbsp;</label>
+                        <label>&nbsp;</label>
 
-                <button class="btn btn-primary w-100">
-                    Filtrar
-                </button>
+                        <button class="btn btn-primary w-100">
+                            Filtrar
+                        </button>
 
-            </div>
+                    </div>
 
-        </div>
-
-    </form>
-
-    <div class="row">
-
-        <div class="col-md-3">
-            <div class="card text-bg-primary mb-3">
-                <div class="card-body">
-                    <h5>Total Tickets</h5>
-                    <h2 th:text="${totalTickets}"></h2>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card text-bg-warning mb-3">
-                <div class="card-body">
-                    <h5>Pendientes</h5>
-                    <h2 th:text="${pendientes}"></h2>
+            </form>
+
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="card text-bg-primary mb-3">
+                        <div class="card-body">
+                            <h5>Total Tickets</h5>
+                            <h2 th:text="${totalTickets}"></h2>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card text-bg-info mb-3">
-                <div class="card-body">
-                    <h5>En Proceso</h5>
-                    <h2 th:text="${proceso}"></h2>
+                <div class="col-md-3">
+                    <div class="card text-bg-warning mb-3">
+                        <div class="card-body">
+                            <h5>Pendientes</h5>
+                            <h2 th:text="${pendientes}"></h2>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card text-bg-success mb-3">
-                <div class="card-body">
-                    <h5>Cerrados</h5>
-                    <h2 th:text="${cerrados}"></h2>
+                <div class="col-md-3">
+                    <div class="card text-bg-info mb-3">
+                        <div class="card-body">
+                            <h5>En Proceso</h5>
+                            <h2 th:text="${proceso}"></h2>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="col-md-3">
+                    <div class="card text-bg-success mb-3">
+                        <div class="card-body">
+                            <h5>Cerrados</h5>
+                            <h2 th:text="${cerrados}"></h2>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
 
-    </div>
+            <div class="row mt-4">
 
-    <div class="row mt-4">
+                <div class="col-md-6">
 
-        <div class="col-md-6">
+                    <div class="card shadow">
 
-            <div class="card shadow">
+                        <div class="card-header">
+                            Tickets por Estado
+                        </div>
+
+                        <div class="card-body">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="card shadow">
+
+                        <div class="card-header">
+                            Tickets por Prioridad
+                        </div>
+
+                        <div class="card-body">
+                            <canvas id="barChart"></canvas>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row mt-4">
+
+                <div class="col-md-12">
+
+                    <div class="card shadow">
+
+                        <div class="card-header">
+                            Histograma de Tickets
+                        </div>
+
+                        <div class="card-body">
+                            <canvas id="histograma"></canvas>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card mt-4 shadow">
 
                 <div class="card-header">
-                    Tickets por Estado
+                    Listado de Tickets
                 </div>
 
                 <div class="card-body">
-                    <canvas id="pieChart"></canvas>
+
+                    <table class="table table-striped">
+
+                        <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Título</th>
+                            <th>Usuario</th>
+                            <th>Categoría</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="t : ${tickets}">
+
+                            <td th:text="${t.codigoTicket}"></td>
+                            <td th:text="${t.titulo}"></td>
+                            <td th:text="${t.usuario.nombres}"></td>
+                            <td th:text="${t.categoria.nombreCategoria}"></td>
+                            <td th:text="${t.prioridad.nombrePrioridad}"></td>
+                            <td th:text="${t.estado.nombreEstado}"></td>
+                            <td th:text="${t.fechaRegistro}"></td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
                 </div>
 
             </div>
 
-        </div>
-
-        <div class="col-md-6">
-
-            <div class="card shadow">
-
-                <div class="card-header">
-                    Tickets por Prioridad
-                </div>
-
-                <div class="card-body">
-                    <canvas id="barChart"></canvas>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="row mt-4">
-
-        <div class="col-md-12">
-
-            <div class="card shadow">
-
-                <div class="card-header">
-                    Histograma de Tickets
-                </div>
-
-                <div class="card-body">
-                    <canvas id="histograma"></canvas>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="card mt-4 shadow">
-
-        <div class="card-header">
-            Listado de Tickets
-        </div>
-
-        <div class="card-body">
-
-            <table class="table table-striped">
-
-                <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Título</th>
-                    <th>Usuario</th>
-                    <th>Categoría</th>
-                    <th>Prioridad</th>
-                    <th>Estado</th>
-                    <th>Fecha</th>
-                </tr>
-                </thead>
-
-                <tbody>
-
-                <tr th:each="t : ${tickets}">
-
-                    <td th:text="${t.codigoTicket}"></td>
-                    <td th:text="${t.titulo}"></td>
-                    <td th:text="${t.usuario.nombres}"></td>
-                    <td th:text="${t.categoria.nombreCategoria}"></td>
-                    <td th:text="${t.prioridad.nombrePrioridad}"></td>
-                    <td th:text="${t.estado.nombreEstado}"></td>
-                    <td th:text="${t.fechaRegistro}"></td>
-
-                </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
+        </main>
 
     </div>
 

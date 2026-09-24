@@ -118,6 +118,8 @@ public class DashboardController {
         model.addAttribute("fechaInicio", inicio);
         model.addAttribute("fechaFin", fin);
 
+        model.addAttribute("activo", "dashboard");
+
         return "dashboard/index";
     }
 

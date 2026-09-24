@@ -1,79 +1,89 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>Usuarios</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
 </head>
+<body class="app-body">
 
-<body>
+<div class="app-layout">
 
-<div class="container mt-4">
+    <div th:replace="~{fragments/nav :: sidebar(${activo})}"></div>
 
-    <h2>Gestión de Usuarios</h2>
+    <div class="app-content">
 
-    <a th:href="@{/}"
-       class="btn btn-secondary mb-3">
-        Volver
-    </a>
+        <div th:replace="~{fragments/nav :: topbar}"></div>
 
-    <a th:href="@{/usuarios/nuevo}"
-       class="btn btn-success mb-3">
-        Nuevo Usuario
-    </a>
+        <main class="page-content">
 
-    <table class="table table-bordered table-striped">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="mb-0">Usuarios</h2>
 
-        <thead>
-
-        <tr>
-            <th>ID</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Correo</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-        </tr>
-
-        </thead>
-
-        <tbody>
-
-        <tr th:each="u : ${usuarios}">
-
-            <td th:text="${u.idUsuario}"></td>
-
-            <td th:text="${u.nombres}"></td>
-
-            <td th:text="${u.apellidos}"></td>
-
-            <td th:text="${u.correo}"></td>
-
-            <td th:text="${u.rol.nombreRol}"></td>
-
-            <td>
-
-                <a th:href="@{/usuarios/editar/{id}(id=${u.idUsuario})}"
-                   class="btn btn-warning btn-sm">
-                    Editar
+                <a th:href="@{/usuarios/nuevo}"
+                   class="btn btn-primary">
+                    Nuevo Usuario
                 </a>
+            </div>
 
-                <a th:href="@{/usuarios/eliminar/{id}(id=${u.idUsuario})}"
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('¿Eliminar usuario?')">
-                    Eliminar
-                </a>
+            <div class="card shadow-sm">
+                <div class="card-body table-responsive">
 
-            </td>
+                    <table class="table table-bordered table-striped mb-0">
 
-        </tr>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
 
-        </tbody>
+                        <tbody>
+                        <tr th:each="u : ${usuarios}">
 
-    </table>
+                            <td th:text="${u.idUsuario}"></td>
+
+                            <td th:text="${u.nombres + ' ' + u.apellidos}"></td>
+
+                            <td th:text="${u.correo}"></td>
+
+                            <td>
+                                <span class="badge"
+                                      th:classappend="${'badge-rol-' + #strings.toLowerCase(u.rol.nombreRol)}"
+                                      th:text="${u.rol.nombreRol}">
+                                </span>
+                            </td>
+
+                            <td>
+                                <a th:href="@{/usuarios/editar/{id}(id=${u.idUsuario})}"
+                                   class="btn btn-outline-primary btn-sm">
+                                    Editar
+                                </a>
+
+                                <a th:href="@{/usuarios/eliminar/{id}(id=${u.idUsuario})}"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('¿Eliminar usuario?')">
+                                    Eliminar
+                                </a>
+                            </td>
+
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+
+        </main>
+
+    </div>
 
 </div>
 
