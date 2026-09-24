@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container-fluid mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>
+            Dashboard de Tickets
+        </h2>
+        <a th:href="@{/}"
+           class="btn btn-secondary">
+            Volver
+        </a>
+
+    </div>
+    <form method="get"
+          th:action="@{/dashboard}">
+
+        <div class="row mb-4">
+
+            <div class="col-md-3">
+
+                <label>Fecha Inicio</label>
+
+                <input type="date"
+                       name="fechaInicio"
+                       th:value="${fechaInicio}"
+                       class="form-control">
+
+            </div>
+
+            <div class="col-md-3">
+
+                <label>Fecha Fin</label>
+
+                <input type="date"
+                       name="fechaFin"
+                       th:value="${fechaFin}"
+                       th:max="${hoy}"
+                       class="form-control">
+
+            </div>
+            <div class="mb-3">
+                <a th:href="@{/dashboard/pdf}"
+                   class="btn btn-danger">
+                    📄 Descargar Reporte PDF
+                </a>
+
+
+            </div>
+            <div class="col-md-2">
+
+                <label>&nbsp;</label>
+
+                <button class="btn btn-primary w-100">
+                    Filtrar
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="card text-bg-primary mb-3">
+                <div class="card-body">
+                    <h5>Total Tickets</h5>
+                    <h2 th:text="${totalTickets}"></h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-bg-warning mb-3">
+                <div class="card-body">
+                    <h5>Pendientes</h5>
+                    <h2 th:text="${pendientes}"></h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-bg-info mb-3">
+                <div class="card-body">
+                    <h5>En Proceso</h5>
+                    <h2 th:text="${proceso}"></h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-bg-success mb-3">
+                <div class="card-body">
+                    <h5>Cerrados</h5>
+                    <h2 th:text="${cerrados}"></h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+
+        <div class="col-md-6">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+                    Tickets por Estado
+                </div>
+
+                <div class="card-body">
+                    <canvas id="pieChart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+                    Tickets por Prioridad
+                </div>
+
+                <div class="card-body">
+                    <canvas id="barChart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+
+        <div class="col-md-12">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+                    Histograma de Tickets
+                </div>
+
+                <div class="card-body">
+                    <canvas id="histograma"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card mt-4 shadow">
+
+        <div class="card-header">
+            Listado de Tickets
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-striped">
+
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Título</th>
+                    <th>Usuario</th>
+                    <th>Categoría</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="t : ${tickets}">
+
+                    <td th:text="${t.codigoTicket}"></td>
+                    <td th:text="${t.titulo}"></td>
+                    <td th:text="${t.usuario.nombres}"></td>
+                    <td th:text="${t.categoria.nombreCategoria}"></td>
+                    <td th:text="${t.prioridad.nombrePrioridad}"></td>
+                    <td th:text="${t.estado.nombreEstado}"></td>
+                    <td th:text="${t.fechaRegistro}"></td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script th:inline="javascript">
+
+
+    let pendientes = /*[[${pendientes}]]*/ 0;
+    let proceso    = /*[[${proceso}]]*/ 0;
+    let atendidos  = /*[[${atendidos}]]*/ 0;
+    let cerrados   = /*[[${cerrados}]]*/ 0;
+
+    new Chart(
+        document.getElementById('pieChart'),
+        {
+            type:'pie',
+            data:{
+                labels:[
+                    'Pendiente',
+                    'En Proceso',
+                    'Atendido',
+                    'Cerrado'
+                ],
+                datasets:[{
+                    data:[
+                        pendientes,
+                        proceso,
+                        atendidos,
+                        cerrados
+                    ]
+                }]
+            }
+        }
+    );
+
+    new Chart(
+        document.getElementById('barChart'),
+        {
+            type:'bar',
+            data:{
+                labels:[
+                    'Pendiente',
+                    'Proceso',
+                    'Atendido',
+                    'Cerrado'
+                ],
+                datasets:[{
+                    label:'Tickets',
+                    data:[
+                        pendientes,
+                        proceso,
+                        atendidos,
+                        cerrados
+                    ]
+                }]
+            }
+        }
+    );
+
+    new Chart(
+        document.getElementById('histograma'),
+        {
+            type:'bar',
+            data:{
+                labels:[
+                    'Pendiente',
+                    'Proceso',
+                    'Atendido',
+                    'Cerrado'
+                ],
+                datasets:[{
+                    label:'Cantidad',
+                    data:[
+                        pendientes,
+                        proceso,
+                        atendidos,
+                        cerrados
+                    ]
+                }]
+            }
+        }
+    );
+
+</script>
+
+</body>
+</html>
