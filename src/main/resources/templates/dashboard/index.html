@@ -7,8 +7,7 @@
 
     <title>Dashboard</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link th:href="@{/css/app.css}" rel="stylesheet">
 
@@ -33,88 +32,71 @@
             </h2>
 
             <form method="get"
-                  th:action="@{/dashboard}">
+                  th:action="@{/dashboard}"
+                  class="dashboard-filtros">
 
-                <div class="row mb-4">
-
-                    <div class="col-md-3">
-
-                        <label>Fecha Inicio</label>
-
-                        <input type="date"
-                               name="fechaInicio"
-                               th:value="${fechaInicio}"
-                               class="form-control">
-
-                    </div>
-
-                    <div class="col-md-3">
-
-                        <label>Fecha Fin</label>
-
-                        <input type="date"
-                               name="fechaFin"
-                               th:value="${fechaFin}"
-                               th:max="${hoy}"
-                               class="form-control">
-
-                    </div>
-                    <div class="mb-3">
-                        <a th:href="@{/dashboard/pdf}"
-                           class="btn btn-danger">
-                            📄 Descargar Reporte PDF
-                        </a>
-
-
-                    </div>
-                    <div class="col-md-2">
-
-                        <label>&nbsp;</label>
-
-                        <button class="btn btn-primary w-100">
-                            Filtrar
-                        </button>
-
-                    </div>
-
+                <div class="campo">
+                    <label>Fecha Inicio</label>
+                    <input type="date"
+                           name="fechaInicio"
+                           th:value="${fechaInicio}"
+                           class="form-control">
                 </div>
+
+                <div class="campo">
+                    <label>Fecha Fin</label>
+                    <input type="date"
+                           name="fechaFin"
+                           th:value="${fechaFin}"
+                           th:max="${hoy}"
+                           class="form-control">
+                </div>
+
+                <button class="btn btn-primary">
+                    Filtrar
+                </button>
+
+                <a th:href="@{/dashboard/pdf}"
+                   class="btn btn-outline-secondary ms-auto">
+                    <i class="bi bi-file-earmark-pdf"></i> Descargar Reporte PDF
+                </a>
 
             </form>
 
             <div class="row">
 
                 <div class="col-md-3">
-                    <div class="card text-bg-primary mb-3">
+                    <div class="card kpi-card kpi-total mb-3">
                         <div class="card-body">
-                            <h5>Total Tickets</h5>
-                            <h2 th:text="${totalTickets}"></h2>
+                            <div class="kpi-label">Total Tickets</div>
+                            <p class="kpi-valor" th:text="${totalTickets}"></p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card text-bg-warning mb-3">
+                    <div class="card kpi-card kpi-pendiente mb-3">
                         <div class="card-body">
-                            <h5>Pendientes</h5>
-                            <h2 th:text="${pendientes}"></h2>
+                            <div class="kpi-label">Pendientes</div>
+                            <p class="kpi-valor" th:text="${pendientes}"></p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card text-bg-info mb-3">
+                    <div class="card kpi-card kpi-proceso mb-3">
                         <div class="card-body">
-                            <h5>En Proceso</h5>
-                            <h2 th:text="${proceso}"></h2>
+                            <div class="kpi-label">En Proceso</div>
+                            <p class="kpi-valor" th:text="${proceso}"></p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card text-bg-success mb-3">
+                    <div class="card kpi-card kpi-cerrado mb-3">
                         <div class="card-body">
-                            <h5>Cerrados</h5>
-                            <h2 th:text="${cerrados}"></h2>
+                            <div class="kpi-label">Cerrados</div>
+                            <p class="kpi-valor" th:text="${cerrados}"></p>
                         </div>
                     </div>
                 </div>
@@ -125,14 +107,14 @@
 
                 <div class="col-md-6">
 
-                    <div class="card shadow">
+                    <div class="card">
 
                         <div class="card-header">
                             Tickets por Estado
                         </div>
 
                         <div class="card-body">
-                            <canvas id="pieChart"></canvas>
+                            <div class="chart-box"><canvas id="pieChart"></canvas></div>
                         </div>
 
                     </div>
@@ -141,14 +123,14 @@
 
                 <div class="col-md-6">
 
-                    <div class="card shadow">
+                    <div class="card">
 
                         <div class="card-header">
                             Tickets por Prioridad
                         </div>
 
                         <div class="card-body">
-                            <canvas id="barChart"></canvas>
+                            <div class="chart-box"><canvas id="barChart"></canvas></div>
                         </div>
 
                     </div>
@@ -161,14 +143,14 @@
 
                 <div class="col-md-12">
 
-                    <div class="card shadow">
+                    <div class="card">
 
                         <div class="card-header">
                             Histograma de Tickets
                         </div>
 
                         <div class="card-body">
-                            <canvas id="histograma"></canvas>
+                            <div class="chart-box"><canvas id="histograma"></canvas></div>
                         </div>
 
                     </div>
@@ -177,7 +159,7 @@
 
             </div>
 
-            <div class="card mt-4 shadow">
+            <div class="card mt-4">
 
                 <div class="card-header">
                     Listado de Tickets
@@ -185,7 +167,7 @@
 
                 <div class="card-body">
 
-                    <table class="table table-striped">
+                    <table class="table table-hover">
 
                         <thead>
                         <tr>
@@ -207,8 +189,8 @@
                             <td th:text="${t.titulo}"></td>
                             <td th:text="${t.usuario.nombres}"></td>
                             <td th:text="${t.categoria.nombreCategoria}"></td>
-                            <td th:text="${t.prioridad.nombrePrioridad}"></td>
-                            <td th:text="${t.estado.nombreEstado}"></td>
+                            <td><span class="badge" th:classappend="${'prioridad-' + #strings.toLowerCase(t.prioridad.nombrePrioridad)}" th:text="${t.prioridad.nombrePrioridad}"></span></td>
+                            <td><span class="badge" th:classappend="${'estado-' + #strings.toLowerCase(#strings.replace(t.estado.nombreEstado,' ','-'))}" th:text="${t.estado.nombreEstado}"></span></td>
                             <td th:text="${t.fechaRegistro}"></td>
 
                         </tr>
@@ -229,31 +211,38 @@
 
 <script th:inline="javascript">
 
-
     let pendientes = /*[[${pendientes}]]*/ 0;
     let proceso    = /*[[${proceso}]]*/ 0;
     let atendidos  = /*[[${atendidos}]]*/ 0;
     let cerrados   = /*[[${cerrados}]]*/ 0;
 
+    const datos   = [pendientes, proceso, atendidos, cerrados];
+    const colores = ['#d97706', '#3b82f6', '#10b981', '#94a3b8'];
+    const opcionesBase = {
+        responsive: true,
+        maintainAspectRatio: false
+    };
+
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = '#475569';
+
     new Chart(
         document.getElementById('pieChart'),
         {
-            type:'pie',
-            data:{
-                labels:[
-                    'Pendiente',
-                    'En Proceso',
-                    'Atendido',
-                    'Cerrado'
-                ],
-                datasets:[{
-                    data:[
-                        pendientes,
-                        proceso,
-                        atendidos,
-                        cerrados
-                    ]
+            type: 'doughnut',
+            data: {
+                labels: ['Pendiente', 'En Proceso', 'Atendido', 'Cerrado'],
+                datasets: [{
+                    data: datos,
+                    backgroundColor: colores,
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
                 }]
+            },
+            options: {
+                ...opcionesBase,
+                cutout: '60%',
+                plugins: { legend: { position: 'bottom' } }
             }
         }
     );
@@ -261,23 +250,23 @@
     new Chart(
         document.getElementById('barChart'),
         {
-            type:'bar',
-            data:{
-                labels:[
-                    'Pendiente',
-                    'Proceso',
-                    'Atendido',
-                    'Cerrado'
-                ],
-                datasets:[{
-                    label:'Tickets',
-                    data:[
-                        pendientes,
-                        proceso,
-                        atendidos,
-                        cerrados
-                    ]
+            type: 'bar',
+            data: {
+                labels: ['Pendiente', 'Proceso', 'Atendido', 'Cerrado'],
+                datasets: [{
+                    label: 'Tickets',
+                    data: datos,
+                    backgroundColor: colores,
+                    borderRadius: 4
                 }]
+            },
+            options: {
+                ...opcionesBase,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#e2e8f0' } },
+                    x: { grid: { display: false } }
+                }
             }
         }
     );
@@ -285,23 +274,23 @@
     new Chart(
         document.getElementById('histograma'),
         {
-            type:'bar',
-            data:{
-                labels:[
-                    'Pendiente',
-                    'Proceso',
-                    'Atendido',
-                    'Cerrado'
-                ],
-                datasets:[{
-                    label:'Cantidad',
-                    data:[
-                        pendientes,
-                        proceso,
-                        atendidos,
-                        cerrados
-                    ]
+            type: 'bar',
+            data: {
+                labels: ['Pendiente', 'Proceso', 'Atendido', 'Cerrado'],
+                datasets: [{
+                    label: 'Cantidad',
+                    data: datos,
+                    backgroundColor: '#2563eb',
+                    borderRadius: 4
                 }]
+            },
+            options: {
+                ...opcionesBase,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#e2e8f0' } },
+                    x: { grid: { display: false } }
+                }
             }
         }
     );

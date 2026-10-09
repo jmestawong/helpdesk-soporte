@@ -48,6 +48,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<Ticket> listarPorCategorias(List<Integer> idsCategorias) {
+        return repository.findByCategoriaIdCategoriaIn(idsCategorias);
+    }
+
+    @Override
     public List<Ticket> buscarPorTitulo(String titulo) {
         return repository.findByTituloContaining(titulo);
     }

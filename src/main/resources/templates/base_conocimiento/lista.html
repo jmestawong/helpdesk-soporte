@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Base de Conocimiento</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link th:href="@{/css/app.css}" rel="stylesheet">
 </head>
@@ -33,14 +33,14 @@
             <form th:action="@{/base-conocimiento/buscar}" method="get" class="mb-3">
                 <div class="input-group">
                     <input type="text" name="texto" class="form-control" placeholder="Buscar por título o contenido">
-                    <button type="submit" class="btn btn-success">Buscar</button>
+                    <button type="submit" class="btn btn-primary">Buscar</button>
                 </div>
             </form>
 
-            <div class="card shadow-sm">
+            <div class="card ">
                 <div class="card-body table-responsive">
 
-                    <table class="table table-bordered table-striped mb-0">
+                    <table class="table table-hover mb-0">
                         <thead>
                         <tr>
                             <th>ID</th>
@@ -62,17 +62,17 @@
 
                             <td>
                                 <a th:href="@{/base-conocimiento/{id}(id=${articulo.idArticulo})}"
-                                   class="btn btn-info btn-sm">
+                                   class="btn btn-outline-secondary btn-sm">
                                     Ver
                                 </a>
 
                                 <a th:href="@{/base-conocimiento/editar/{id}(id=${articulo.idArticulo})}"
-                                   class="btn btn-warning btn-sm">
+                                   class="btn btn-outline-primary btn-sm">
                                     Editar
                                 </a>
 
                                 <a th:href="@{/base-conocimiento/eliminar/{id}(id=${articulo.idArticulo})}"
-                                   class="btn btn-danger btn-sm"
+                                   class="btn btn-outline-danger btn-sm"
                                    onclick="return confirm('¿Desea eliminar este artículo?')">
                                     Eliminar
                                 </a>

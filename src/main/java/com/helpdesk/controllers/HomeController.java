@@ -16,6 +16,6 @@ public class HomeController {
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(a -> a.equals("ROLE_ADMINISTRADOR") || a.equals("ROLE_TECNICO"));
 
-        return puedeVerDashboard ? "redirect:/dashboard" : "redirect:/tickets";
+        return puedeVerDashboard ? "redirect:/dashboard" : "redirect:/tickets/mis-tickets";
     }
 }

@@ -42,13 +42,33 @@ public class SecurityConfig {
                         .requestMatchers("/")
                         .hasAnyRole("ADMINISTRADOR", "TECNICO", "USUARIO")
 
-                        // Tickets
-                        .requestMatchers("/tickets/**")
+                        // Tickets: crear y ver los propios (todos los roles)
+                        .requestMatchers("/tickets/nuevo", "/tickets/guardar", "/tickets/mis-tickets")
                         .hasAnyRole("ADMINISTRADOR", "TECNICO", "USUARIO")
+
+                        // Tickets: gestión completa (solo personal de soporte)
+                        .requestMatchers("/tickets/**")
+                        .hasAnyRole("ADMINISTRADOR", "TECNICO")
+
+                        // Requerimientos: crear y ver los propios (todos los roles)
+                        .requestMatchers("/requerimientos/nuevo", "/requerimientos/guardar", "/requerimientos/mis-requerimientos")
+                        .hasAnyRole("ADMINISTRADOR", "TECNICO", "USUARIO")
+
+                        // Requerimientos: gestión completa (solo personal de soporte)
+                        .requestMatchers("/requerimientos/**")
+                        .hasAnyRole("ADMINISTRADOR", "TECNICO")
 
                         // Base de Conocimiento
                         .requestMatchers("/base-conocimiento/**")
                         .hasAnyRole("ADMINISTRADOR", "TECNICO", "USUARIO")
+
+                        // Preguntas Frecuentes: consulta para todos
+                        .requestMatchers("/preguntas-frecuentes", "/preguntas-frecuentes/")
+                        .hasAnyRole("ADMINISTRADOR", "TECNICO", "USUARIO")
+
+                        // Preguntas Frecuentes: gestión (solo personal de soporte)
+                        .requestMatchers("/preguntas-frecuentes/**")
+                        .hasAnyRole("ADMINISTRADOR", "TECNICO")
 
                         // Perfil
                         .requestMatchers("/perfil/**")

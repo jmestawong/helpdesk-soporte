@@ -78,6 +78,38 @@ CREATE TABLE ticket (
 );
 
 -- ============================================
+-- TABLA REQUERIMIENTO (Solicitud de Nuevo Requerimiento)
+-- ============================================
+
+CREATE TABLE requerimiento (
+    id_requerimiento INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_requerimiento VARCHAR(20) NOT NULL UNIQUE,
+    titulo VARCHAR(150) NOT NULL,
+    descripcion TEXT,
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    id_usuario INT NOT NULL,
+    id_categoria INT NOT NULL,
+    id_prioridad INT NOT NULL,
+    id_estado INT NOT NULL,
+
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria),
+    FOREIGN KEY (id_prioridad) REFERENCES prioridad(id_prioridad),
+    FOREIGN KEY (id_estado) REFERENCES estado_ticket(id_estado)
+);
+
+-- ============================================
+-- TABLA PREGUNTA FRECUENTE (Consulta / FAQ)
+-- ============================================
+
+CREATE TABLE pregunta_frecuente (
+    id_pregunta INT AUTO_INCREMENT PRIMARY KEY,
+    pregunta VARCHAR(255) NOT NULL,
+    respuesta TEXT NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
 -- TABLA ARTICULO DE CONOCIMIENTO (Base de Conocimiento)
 -- ============================================
 
@@ -152,6 +184,38 @@ VALUES
 ('TK-0014','Solicitud de acceso','Nuevo colaborador requiere acceso al sistema',3,4,1,3),
 ('TK-0015','Error en aplicación web','La aplicación muestra error 500 al guardar',1,2,4,1),
 ('TK-0016','Servidor no disponible','No se puede acceder al servidor principal',2,3,4,2);
+
+-- ============================================
+-- SOLICITUDES DE REQUERIMIENTO (seed)
+-- ============================================
+
+INSERT INTO requerimiento
+(codigo_requerimiento, titulo, descripcion, id_usuario, id_categoria, id_prioridad, id_estado)
+VALUES
+('REQ-0001','Nuevo equipo para colaborador','Se solicita laptop para nuevo ingreso del área de ventas',3,1,2,1),
+('REQ-0002','Instalación de software de diseño','Se requiere licencia e instalación de Adobe Photoshop',2,2,1,2),
+('REQ-0003','Acceso a carpeta compartida','Solicito acceso de lectura/escritura a la carpeta de Finanzas',3,4,2,1),
+('REQ-0004','Ampliación de almacenamiento','Se requiere aumentar el espacio en disco del servidor de archivos',1,3,3,3),
+('REQ-0005','Nueva cuenta de correo','Solicito la creación de una cuenta de correo para el área de soporte',2,4,1,4);
+
+-- ============================================
+-- PREGUNTAS FRECUENTES (seed)
+-- ============================================
+
+INSERT INTO pregunta_frecuente (pregunta, respuesta, fecha_creacion)
+VALUES
+('¿Cómo creo un nuevo ticket de incidencia?',
+ 'Ve a "Nuevo Ticket" en el menú lateral, completa el título, descripción, categoría y prioridad, y presiona "Guardar Ticket". Podrás seguir su estado desde "Mis Tickets".',
+ NOW()),
+('¿Cuál es la diferencia entre un ticket y un requerimiento?',
+ 'Un ticket reporta una incidencia o problema (algo que dejó de funcionar). Un requerimiento es una solicitud de algo nuevo, como un equipo, acceso o instalación de software.',
+ NOW()),
+('¿Cómo recupero mi contraseña si la olvidé?',
+ 'Si ya iniciaste sesión, puedes cambiarla desde "Perfil". Si no recuerdas tu contraseña actual, contacta a un Administrador para que la restablezca.',
+ NOW()),
+('¿Cuánto tiempo tarda en atenderse un ticket o requerimiento?',
+ 'Depende de la prioridad asignada: los casos Urgentes y de Alta prioridad se atienden primero. Puedes consultar el estado en todo momento desde "Mis Tickets" o "Mis Requerimientos".',
+ NOW());
 
 -- ============================================
 -- ARTÍCULOS DE LA BASE DE CONOCIMIENTO (seed)

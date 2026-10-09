@@ -16,6 +16,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 
     List<Ticket> findByEstado(EstadoTicket estado);
 
+    List<Ticket> findByCategoriaIdCategoriaIn(List<Integer> idsCategorias);
+
     List<Ticket> findByTituloContaining(String titulo);
     List<Ticket> findByFechaRegistroBetween(
             LocalDateTime inicio,

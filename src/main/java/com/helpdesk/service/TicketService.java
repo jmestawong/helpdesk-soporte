@@ -20,5 +20,7 @@ public interface TicketService {
 
     List<Ticket> listarPorEstado(EstadoTicket estado);
 
+    List<Ticket> listarPorCategorias(List<Integer> idsCategorias);
+
     List<Ticket> buscarPorTitulo(String titulo);
 }

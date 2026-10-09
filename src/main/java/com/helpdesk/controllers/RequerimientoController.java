@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.helpdesk.entity.Ticket;
+import com.helpdesk.entity.Requerimiento;
 import com.helpdesk.entity.Usuario;
 import com.helpdesk.service.CategoriaService;
 import com.helpdesk.service.EstadoTicketService;
 import com.helpdesk.service.PrioridadService;
-import com.helpdesk.service.TicketService;
+import com.helpdesk.service.RequerimientoService;
 import com.helpdesk.service.UsuarioService;
 
 @Controller
-@RequestMapping("/tickets")
-public class TicketController {
+@RequestMapping("/requerimientos")
+public class RequerimientoController {
 
     @Autowired
-    private TicketService ticketService;
+    private RequerimientoService requerimientoService;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -41,93 +41,93 @@ public class TicketController {
     private EstadoTicketService estadoTicketService;
 
     @GetMapping
-    public String listarTickets(Model model) {
-        model.addAttribute("tickets", ticketService.listar());
+    public String listar(Model model) {
+        model.addAttribute("requerimientos", requerimientoService.listar());
         model.addAttribute("categorias", categoriaService.listar());
-        model.addAttribute("activo", "tickets");
-        return "tickets/lista";
+        model.addAttribute("activo", "requerimientos");
+        return "requerimientos/lista";
     }
 
-    @GetMapping("/mis-tickets")
-    public String misTickets(Principal principal, Model model) {
+    @GetMapping("/mis-requerimientos")
+    public String misRequerimientos(Principal principal, Model model) {
 
         Usuario usuario = usuarioService.buscarPorCorreo(principal.getName());
 
-        model.addAttribute("tickets", ticketService.listarPorUsuario(usuario));
-        model.addAttribute("activo", "mis-tickets");
+        model.addAttribute("requerimientos", requerimientoService.listarPorUsuario(usuario));
+        model.addAttribute("activo", "mis-requerimientos");
 
-        return "tickets/mis-tickets";
+        return "requerimientos/mis-requerimientos";
     }
 
     @GetMapping("/nuevo")
-    public String nuevoTicket(Model model) {
-        model.addAttribute("ticket", new Ticket());
+    public String nuevo(Model model) {
+        model.addAttribute("requerimiento", new Requerimiento());
         model.addAttribute("usuarios", usuarioService.listar());
         model.addAttribute("categorias", categoriaService.listar());
         model.addAttribute("prioridades", prioridadService.listar());
         model.addAttribute("estados", estadoTicketService.listar());
-        model.addAttribute("activo", "nuevo-ticket");
+        model.addAttribute("activo", "nuevo-requerimiento");
 
-        return "tickets/form";
+        return "requerimientos/form";
     }
 
     @PostMapping("/guardar")
-    public String guardarTicket(@ModelAttribute Ticket ticket) {
-        ticketService.guardar(ticket);
-        return "redirect:/tickets";
+    public String guardar(@ModelAttribute Requerimiento requerimiento) {
+        requerimientoService.guardar(requerimiento);
+        return "redirect:/requerimientos";
     }
 
     @GetMapping("/editar/{id}")
-    public String editarTicket(@PathVariable Integer id, Model model) {
-        Ticket ticket = ticketService.buscarPorId(id);
+    public String editar(@PathVariable Integer id, Model model) {
+        Requerimiento requerimiento = requerimientoService.buscarPorId(id);
 
-        model.addAttribute("ticket", ticket);
+        model.addAttribute("requerimiento", requerimiento);
         model.addAttribute("usuarios", usuarioService.listar());
         model.addAttribute("categorias", categoriaService.listar());
         model.addAttribute("prioridades", prioridadService.listar());
         model.addAttribute("estados", estadoTicketService.listar());
-        model.addAttribute("activo", "tickets");
+        model.addAttribute("activo", "requerimientos");
 
-        return "tickets/form";
+        return "requerimientos/form";
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminarTicket(@PathVariable Integer id) {
-        ticketService.eliminar(id);
-        return "redirect:/tickets";
+    public String eliminar(@PathVariable Integer id) {
+        requerimientoService.eliminar(id);
+        return "redirect:/requerimientos";
     }
 
     @GetMapping("/buscar")
-    public String buscarTicket(@RequestParam String titulo, Model model) {
+    public String buscar(@RequestParam String titulo, Model model) {
 
         if (titulo != null && titulo.matches("\\d+")) {
 
-            Ticket ticket = ticketService.buscarPorId(Integer.valueOf(titulo));
-            model.addAttribute("tickets", ticket != null ? List.of(ticket) : List.of());
+            Requerimiento requerimiento = requerimientoService.buscarPorId(Integer.valueOf(titulo));
+            model.addAttribute("requerimientos", requerimiento != null ? List.of(requerimiento) : List.of());
 
         } else {
-            model.addAttribute("tickets", ticketService.buscarPorTitulo(titulo));
+            model.addAttribute("requerimientos", requerimientoService.buscarPorTitulo(titulo));
         }
 
         model.addAttribute("categorias", categoriaService.listar());
-        model.addAttribute("activo", "tickets");
-        return "tickets/lista";
+        model.addAttribute("activo", "requerimientos");
+        return "requerimientos/lista";
     }
 
     @GetMapping("/filtrar")
-    public String filtrarPorCategoria(
+    public String filtrar(
             @RequestParam(required = false) List<Integer> categoriasSeleccionadas,
             Model model) {
 
         if (categoriasSeleccionadas != null && !categoriasSeleccionadas.isEmpty()) {
-            model.addAttribute("tickets", ticketService.listarPorCategorias(categoriasSeleccionadas));
+            model.addAttribute("requerimientos", requerimientoService.listarPorCategorias(categoriasSeleccionadas));
         } else {
-            model.addAttribute("tickets", ticketService.listar());
+            model.addAttribute("requerimientos", requerimientoService.listar());
         }
 
         model.addAttribute("categorias", categoriaService.listar());
         model.addAttribute("categoriasSeleccionadas", categoriasSeleccionadas);
-        model.addAttribute("activo", "tickets");
-        return "tickets/lista";
+        model.addAttribute("activo", "requerimientos");
+        return "requerimientos/lista";
     }
 }

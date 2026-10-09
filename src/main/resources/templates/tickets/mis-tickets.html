@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Tickets</title>
+    <title>Mis Tickets</title>
 
     <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -20,7 +20,7 @@
 
         <main class="page-content">
 
-            <h2>Gestión de Tickets</h2>
+            <h2>Mis Tickets</h2>
 
             <div class="d-flex gap-2 mb-3">
 
@@ -31,34 +31,6 @@
 
             </div>
 
-            <!-- Buscador -->
-            <form th:action="@{/tickets/buscar}" method="get" class="mb-3">
-                <div class="input-group">
-                    <input type="text" name="titulo" class="form-control" placeholder="Buscar por título o ID">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
-                </div>
-            </form>
-
-            <!-- Filtro por categoría -->
-            <form th:action="@{/tickets/filtrar}" method="get" class="mb-3">
-                <div class="d-flex flex-wrap align-items-center gap-3">
-                    <div class="form-check" th:each="c : ${categorias}">
-                        <input type="checkbox"
-                               name="categoriasSeleccionadas"
-                               class="form-check-input"
-                               th:id="${'cat' + c.idCategoria}"
-                               th:value="${c.idCategoria}"
-                               th:checked="${categoriasSeleccionadas != null and categoriasSeleccionadas.contains(c.idCategoria)}">
-                        <label class="form-check-label"
-                               th:for="${'cat' + c.idCategoria}"
-                               th:text="${c.nombreCategoria}">
-                        </label>
-                    </div>
-                    <button type="submit" class="btn btn-outline-secondary">Filtrar</button>
-                    <a th:href="@{/tickets}" class="btn btn-outline-dark">Limpiar</a>
-                </div>
-            </form>
-
             <div class="card ">
                 <div class="card-body table-responsive">
 
@@ -68,12 +40,10 @@
                             <th>ID</th>
                             <th>Código</th>
                             <th>Título</th>
-                            <th>Usuario</th>
                             <th>Categoría</th>
                             <th>Prioridad</th>
                             <th>Estado</th>
                             <th>Fecha</th>
-                            <th>Acciones</th>
                         </tr>
                         </thead>
 
@@ -82,24 +52,10 @@
                             <td th:text="${ticket.idTicket}"></td>
                             <td th:text="${ticket.codigoTicket}"></td>
                             <td th:text="${ticket.titulo}"></td>
-                            <td th:text="${ticket.usuario.nombres}"></td>
                             <td th:text="${ticket.categoria.nombreCategoria}"></td>
                             <td><span class="badge" th:classappend="${'prioridad-' + #strings.toLowerCase(ticket.prioridad.nombrePrioridad)}" th:text="${ticket.prioridad.nombrePrioridad}"></span></td>
                             <td><span class="badge" th:classappend="${'estado-' + #strings.toLowerCase(#strings.replace(ticket.estado.nombreEstado,' ','-'))}" th:text="${ticket.estado.nombreEstado}"></span></td>
                             <td th:text="${ticket.fechaRegistro}"></td>
-
-                            <td>
-                                <a th:href="@{/tickets/editar/{id}(id=${ticket.idTicket})}"
-                                   class="btn btn-outline-primary btn-sm">
-                                    Editar
-                                </a>
-
-                                <a th:href="@{/tickets/eliminar/{id}(id=${ticket.idTicket})}"
-                                   class="btn btn-outline-danger btn-sm"
-                                   onclick="return confirm('¿Desea eliminar este ticket?')">
-                                    Eliminar
-                                </a>
-                            </td>
                         </tr>
                         </tbody>
                     </table>

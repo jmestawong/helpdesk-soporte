@@ -19,10 +19,17 @@
             </a>
         </li>
 
-        <li>
+        <li sec:authorize="hasAnyRole('ADMINISTRADOR','TECNICO')">
             <a class="nav-link" th:classappend="${activo == 'tickets'} ? 'active'" th:href="@{/tickets}">
                 <i class="bi bi-pencil-square"></i>
                 <span class="link-text">Tickets</span>
+            </a>
+        </li>
+
+        <li sec:authorize="hasRole('USUARIO')">
+            <a class="nav-link" th:classappend="${activo == 'mis-tickets'} ? 'active'" th:href="@{/tickets/mis-tickets}">
+                <i class="bi bi-pencil-square"></i>
+                <span class="link-text">Mis Tickets</span>
             </a>
         </li>
 
@@ -33,10 +40,38 @@
             </a>
         </li>
 
+        <li sec:authorize="hasAnyRole('ADMINISTRADOR','TECNICO')">
+            <a class="nav-link" th:classappend="${activo == 'requerimientos'} ? 'active'" th:href="@{/requerimientos}">
+                <i class="bi bi-clipboard-check"></i>
+                <span class="link-text">Requerimientos</span>
+            </a>
+        </li>
+
+        <li sec:authorize="hasRole('USUARIO')">
+            <a class="nav-link" th:classappend="${activo == 'mis-requerimientos'} ? 'active'" th:href="@{/requerimientos/mis-requerimientos}">
+                <i class="bi bi-clipboard-check"></i>
+                <span class="link-text">Mis Requerimientos</span>
+            </a>
+        </li>
+
+        <li>
+            <a class="nav-link" th:classappend="${activo == 'nuevo-requerimiento'} ? 'active'" th:href="@{/requerimientos/nuevo}">
+                <i class="bi bi-clipboard-plus"></i>
+                <span class="link-text">Nuevo Requerimiento</span>
+            </a>
+        </li>
+
         <li>
             <a class="nav-link" th:classappend="${activo == 'base-conocimiento'} ? 'active'" th:href="@{/base-conocimiento}">
                 <i class="bi bi-journal-richtext"></i>
                 <span class="link-text">Base de Conocimiento</span>
+            </a>
+        </li>
+
+        <li>
+            <a class="nav-link" th:classappend="${activo == 'preguntas-frecuentes'} ? 'active'" th:href="@{/preguntas-frecuentes}">
+                <i class="bi bi-question-circle"></i>
+                <span class="link-text">Preguntas Frecuentes</span>
             </a>
         </li>
 
@@ -69,14 +104,15 @@
 
 <header th:fragment="topbar" class="topbar">
 
-    <form th:action="@{/tickets/buscar}" method="get" class="topbar-search">
-        <input type="text" name="titulo" class="form-control" placeholder="Buscar ticket...">
+    <form th:action="@{/tickets/buscar}" method="get" class="topbar-search"
+          sec:authorize="hasAnyRole('ADMINISTRADOR','TECNICO')">
+        <input type="text" name="titulo" class="form-control" placeholder="Buscar por título o ID...">
     </form>
 
     <div class="topbar-actions">
         <i class="bi bi-bell topbar-icon" title="Notificaciones"></i>
 
-        <a th:href="@{/perfil}" class="avatar" th:if="${usuarioSesion != null}"
+        <a th:href="@{/perfil}" class="user-avatar" th:if="${usuarioSesion != null}"
            th:text="${#strings.substring(usuarioSesion.nombres,0,1) + #strings.substring(usuarioSesion.apellidos,0,1)}">
         </a>
     </div>

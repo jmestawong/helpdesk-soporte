@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Requerimientos</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body class="app-body">
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/nav :: sidebar(${activo})}"></div>
+
+    <div class="app-content">
+
+        <div th:replace="~{fragments/nav :: topbar}"></div>
+
+        <main class="page-content">
+
+            <h2>Mis Requerimientos</h2>
+
+            <div class="d-flex gap-2 mb-3">
+
+                <a th:href="@{/requerimientos/nuevo}"
+                   class="btn btn-primary">
+                    Nuevo Requerimiento
+                </a>
+
+            </div>
+
+            <div class="card">
+                <div class="card-body table-responsive">
+
+                    <table class="table table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Código</th>
+                            <th>Título</th>
+                            <th>Categoría</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="r : ${requerimientos}">
+                            <td th:text="${r.idRequerimiento}"></td>
+                            <td th:text="${r.codigoRequerimiento}"></td>
+                            <td th:text="${r.titulo}"></td>
+                            <td th:text="${r.categoria.nombreCategoria}"></td>
+                            <td><span class="badge" th:classappend="${'prioridad-' + #strings.toLowerCase(r.prioridad.nombrePrioridad)}" th:text="${r.prioridad.nombrePrioridad}"></span></td>
+                            <td><span class="badge" th:classappend="${'estado-' + #strings.toLowerCase(#strings.replace(r.estado.nombreEstado,' ','-'))}" th:text="${r.estado.nombreEstado}"></span></td>
+                            <td th:text="${r.fechaRegistro}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+</body>
+</html>
